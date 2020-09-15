@@ -40,6 +40,15 @@ services:
     networks:
       - blockchain-network
   
+  trust-certificates-api:
+    image: idetix/trust-certificates-api
+    env_file:
+      - ./.env
+    expose:
+      - ${TRUST_CERTIFICATES_API_PORT}
+    ports:
+      - ${TRUST_CERTIFICATES_API_PORT}:9191
+
   demo-host-website:
     env_file:
       - ./.env
