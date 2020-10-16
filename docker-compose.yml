@@ -1,32 +1,45 @@
 version: "3.7"
 services:
-  mysql-service:
-    restart: always
-    image: mysql:5.7
-    env_file:
-      - ./.env
-    networks:
-      - spring-boot-mysql-network
-    expose:
-      - "3306"
+#  guest:
+#    build: .
+#    ports: 
+#        - '8081:8081'
+  ipfs:
+    image: ipfs/go-ipfs:latest
     ports:
-      - "6033:3306"
+        - '8080:8080'
+        - '4001:4001'
+        - '5001:5001'
+    volumes:
+        - './ipfs_data:/data/ipfs'
+        - './ipfs_staging:/export'
+#  mysql-service:
+#    restart: always
+#    image: mysql:5.7
+#    env_file:
+#      - ./.env
+#    networks:
+#      - spring-boot-mysql-network
+#    expose:
+#      - "3306"
+#    ports:
+#      - "6033:3306"
 
-  identity-approver:
-    restart: on-failure
-    env_file:
-      - ./.env
-    image: idetix/backend:develop
-    expose:
-      - ${SERVER_PORT}
-    ports:
-      - ${SERVER_PORT}:${SERVER_PORT}
-
-    networks:
-      - spring-boot-mysql-network
-      - blockchain-network
-    depends_on:
-      - mysql-service
+#  identity-approver:
+#    restart: on-failure
+#    env_file:
+#      - ./.env
+#    image: idetix/backend:develop
+#    expose:
+#      - ${SERVER_PORT}
+#    ports:
+#      - ${SERVER_PORT}:${SERVER_PORT}
+#
+#    networks:
+#      - spring-boot-mysql-network
+#      - blockchain-network
+#    depends_on:
+#      - mysql-service
 
   ganache-cli:
     env_file:
@@ -36,7 +49,7 @@ services:
       - ${GANACHE_PORT}
     ports:
       - ${GANACHE_PORT}:${GANACHE_PORT}
-    command: bash -c "ganache-cli --h 0.0.0.0 --port ${GANACHE_PORT} --db ./ganache-db --mnemonic '${MNEMONIC}'"
+    command: sh -c "ganache-cli --h 0.0.0.0 --port ${GANACHE_PORT} --db ./ganache-db --mnemonic '${MNEMONIC}'"
     networks:
       - blockchain-network
   
@@ -63,3 +76,6 @@ networks:
     driver: bridge
   blockchain-network:
     driver: bridge
+
+volumes:
+  ipfs:
