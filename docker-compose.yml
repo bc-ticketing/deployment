@@ -4,7 +4,7 @@ services:
     restart: always
     image: mysql:5.7
     env_file:
-      - ./.env
+      - .env
     networks:
       - spring-boot-mysql-network
     expose:
@@ -15,7 +15,7 @@ services:
   identity-approver:
     restart: on-failure
     env_file:
-      - ./.env
+      - .env
     image: idetix/backend:develop
     expose:
       - ${SERVER_PORT}
@@ -30,33 +30,23 @@ services:
 
   ganache-cli:
     env_file:
-      - ./.env
+      - .env
     image: idetix/ganache-cli
     expose:
       - ${GANACHE_PORT}
     ports:
       - ${GANACHE_PORT}:${GANACHE_PORT}
-    command: bash -c "ganache-cli --h 0.0.0.0 --port ${GANACHE_PORT} --db ./ganache-db --mnemonic '${MNEMONIC}'"
     networks:
       - blockchain-network
-  
+
   trust-certificates-api:
     image: idetix/trust-certificates-api
     env_file:
-      - ./.env
+      - .env
     expose:
       - ${TRUST_CERTIFICATES_API_PORT}
     ports:
       - ${TRUST_CERTIFICATES_API_PORT}:9191
-
-  demo-host-website:
-    env_file:
-      - ./.env
-    image: idetix/demo-host-website
-    expose:
-      - ${DEMO_HOST_WEBSITEPORT_PORT}
-    ports:
-      - ${DEMO_HOST_WEBSITEPORT_PORT}:80
 
 networks:
   spring-boot-mysql-network:
