@@ -21,7 +21,6 @@ services:
       - ${SERVER_PORT}
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
-
     networks:
       - spring-boot-mysql-network
       - blockchain-network
@@ -38,7 +37,7 @@ services:
       - ${GANACHE_PORT}:${GANACHE_PORT}
     networks:
       - blockchain-network
-
+  
   trust-certificates-api:
     image: idetix/trust-certificates-api
     env_file:
@@ -48,8 +47,26 @@ services:
     ports:
       - ${TRUST_CERTIFICATES_API_PORT}:9191
 
+  #  guest:
+  #    build: .
+  #    ports:
+  #        - '8081:8081'
+
+  ipfs:
+    image: ipfs/go-ipfs:latest
+    ports:
+      - '8080:8080'
+      - '4001:4001'
+      - '5001:5001'
+    volumes:
+      - './ipfs_data:/data/ipfs'
+      - './ipfs_staging:/export'
+
 networks:
   spring-boot-mysql-network:
     driver: bridge
   blockchain-network:
     driver: bridge
+
+volumes:
+  ipfs:
