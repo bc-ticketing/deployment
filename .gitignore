@@ -1,3 +1,6 @@
 .env
+.env.local
 .idea
 ganache-snapshot/ganache_db
+ipfs_data
+ipfs_staging
