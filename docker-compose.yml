@@ -1,23 +1,10 @@
 version: "3.7"
 services:
-  #  guest:
-  #    build: .
-  #    ports:
-  #        - '8081:8081'
-  ipfs:
-    image: ipfs/go-ipfs:latest
-    ports:
-      - "8080:8080"
-      - "4001:4001"
-      - "5001:5001"
-    volumes:
-      - "./ipfs_data:/data/ipfs"
-      - "./ipfs_staging:/export"
   mysql-service:
     restart: always
     image: mysql:5.7
     env_file:
-      - ./.env
+      - .env
     networks:
       - spring-boot-mysql-network
     expose:
@@ -28,13 +15,12 @@ services:
   identity-approver:
     restart: on-failure
     env_file:
-      - ./.env
+      - .env
     image: idetix/backend:develop
     expose:
       - ${SERVER_PORT}
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
-
     networks:
       - spring-boot-mysql-network
       - blockchain-network
@@ -43,35 +29,38 @@ services:
 
   ganache-cli:
     env_file:
-      - ./.env
+      - .env
     image: idetix/ganache-cli
     expose:
       - ${GANACHE_PORT}
     ports:
       - ${GANACHE_PORT}:${GANACHE_PORT}
-    command: sh -c "ganache-cli --h 0.0.0.0 --port ${GANACHE_PORT} --db ./ganache-db --mnemonic '${MNEMONIC}'"
-    volumes:
-      - "./ganache-snapshot/ganache_db:/ganache_db"
     networks:
       - blockchain-network
 
   trust-certificates-api:
     image: idetix/trust-certificates-api
     env_file:
-      - ./.env
+      - .env
     expose:
       - ${TRUST_CERTIFICATES_API_PORT}
     ports:
       - ${TRUST_CERTIFICATES_API_PORT}:9191
 
-  demo-host-website:
-    env_file:
-      - ./.env
-    image: idetix/demo-host-website
-    expose:
-      - ${DEMO_HOST_WEBSITEPORT_PORT}
+  #  guest:
+  #    build: .
+  #    ports:
+  #        - '8081:8081'
+
+  ipfs:
+    image: ipfs/go-ipfs:latest
     ports:
-      - ${DEMO_HOST_WEBSITEPORT_PORT}:80
+      - "8080:8080"
+      - "4001:4001"
+      - "5001:5001"
+    volumes:
+      - "./ipfs_data:/data/ipfs"
+      - "./ipfs_staging:/export"
 
 networks:
   spring-boot-mysql-network:
