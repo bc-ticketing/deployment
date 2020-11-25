@@ -27,16 +27,16 @@ services:
     depends_on:
       - mysql-service
 
-  ganache-cli:
-    env_file:
-      - .env
-    image: idetix/ganache-cli
-    expose:
-      - ${GANACHE_PORT}
-    ports:
-      - ${GANACHE_PORT}:${GANACHE_PORT}
-    networks:
-      - blockchain-network
+        #  ganache-cli:
+        #env_file:
+        # - .env
+        #image: idetix/ganache-cli
+        #expose:
+        #- ${GANACHE_PORT}
+        #ports:
+        #- ${GANACHE_PORT}:${GANACHE_PORT}
+        #networks:
+        #- blockchain-network
 
   trust-certificates-api:
     image: idetix/trust-certificates-api
@@ -47,10 +47,10 @@ services:
     ports:
       - ${TRUST_CERTIFICATES_API_PORT}:9191
 
-  #  guest:
-  #    build: .
-  #    ports:
-  #        - '8081:8081'
+  guest:
+    image: zebrasdev/guest-client:build
+    ports:
+      - "8081:8081"
 
   ipfs:
     image: ipfs/go-ipfs:latest
