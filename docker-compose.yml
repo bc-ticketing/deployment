@@ -16,7 +16,7 @@ services:
     restart: on-failure
     env_file:
       - .env
-    image: idetix/backend:develop
+    image: idetix/backend:latest
     expose:
       - ${SERVER_PORT}
     ports:
